@@ -15,8 +15,15 @@ use App\Http\Controllers\PostController;
 |
 */
 
-
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::middleware(['auth'])->prefix('post')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('admweb');//管理者首頁
+    // Route::get('post/create', 'HomeController@create');
+    // Route::post('post', 'HomeController@store');
+    // Route::get('post/{id}', 'HomeController@show');
+    // Route::get('post/{id}/edit', 'HomeController@edit');
+    // Route::put('post/{id}', 'HomeController@update');
+    // Route::delete('post/{id}', 'HomeController@destroy');
+});
 
 Route::get('login', [LoginController::class, 'show'])->name('login');
 Route::post('login',[LoginController::class, 'login'])->name('login');

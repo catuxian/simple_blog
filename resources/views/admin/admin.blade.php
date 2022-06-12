@@ -11,5 +11,6 @@
     {{ Auth::user()->name}} 已登入
     <a href="{{ route('logout')}}">登出</a>
 @endif
+
 </body>
 </html>

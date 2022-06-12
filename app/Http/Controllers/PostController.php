@@ -14,11 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('home');
-        // if(Auth::check()) {
-        //     echo Auth::user()->name;
-        //     return "您已經登入";
-        // }
+        return view('admin.admin');
     }
 
     /**
