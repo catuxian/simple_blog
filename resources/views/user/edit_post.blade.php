@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{route('admin_home')}}">管理者首頁</a>
+    <a href="{{route('user_home')}}">管理者首頁</a>
     <h1>編輯文章</h1>
     <form method="post" action="{{route('post.update',['id'=>$post->id])}}">
         @csrf

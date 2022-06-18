@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
-// use Illuminate\Support\Facades\DB;
+
 
 class PostController extends Controller
 {
@@ -18,8 +18,11 @@ class PostController extends Controller
     {
         
         $Post = new Post;
-        $posts = $Post::all();
-        return view('admin.admin_home')->with('posts', $posts);
+        
+        //依照會員id找到對應的文章
+        $posts = $Post::where('user_id',Auth::user()->id)->get();
+
+        return view('user.user_home')->with('posts', $posts);
     }
 
     /**
@@ -29,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.create_post');
+        return view('user.create_post');
     }
 
     /**
@@ -49,7 +52,7 @@ class PostController extends Controller
  
         $Post->save();
 
-        return redirect()->route('admin_home');
+        return redirect()->route('user_home');
     }
 
     /**
@@ -74,7 +77,7 @@ class PostController extends Controller
         $Post = new Post;
         $post_data = Post::find($id);
         
-        return view('admin.edit_post')->with('post', $post_data);
+        return view('user.edit_post')->with('post', $post_data);
     }
 
     /**
@@ -108,6 +111,6 @@ class PostController extends Controller
     {
         Post::destroy($id);
         
-        return redirect()->route('admin_home');
+        return redirect()->route('user_home');
     }
 }

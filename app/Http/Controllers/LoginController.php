@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function show()
     {
-        return view('admin.login');
+        return view('user.login');
     }
 
     public function login(Request $request)
@@ -23,11 +23,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('/');
+            return redirect()->intended( route('user_home') );
         }
  
         return back()->withErrors([
-            'fail' => 'Email or password is wrong!',
+            'fail' => '帳號或密碼錯誤',
         ])->onlyInput('email');
     }
 
