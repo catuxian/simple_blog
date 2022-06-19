@@ -24,9 +24,9 @@ class RegisterController extends Controller
         $User->name = $input['name'];
         $User->email = $input['email'];
         $User->password = Hash::make( $input['password'] );
-
-
         $User->save();
+
+        event(new Registered($User));
 
         return redirect()->route('login');
     }
