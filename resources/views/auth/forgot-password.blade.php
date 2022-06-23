@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h1>請先驗證您的email</h1>
-    @if (session('message'))
-        {{ session('message') }}
-    @endif
-    <form action="{{ route('verification.send')}} " method="post">
-        @csrf
-        <button>重寄驗證信</button>
+    <a href="{{ route('login') }}"> 登入 </a>
+    <h1>忘記密碼</h1>
+    <form method="post" action=" {{ route('password.email') }} ">
+    @csrf
+    <input type="email" name="email" required>
+    <input type="submit" value="送出">
     </form>
 </body>
+
 </html>

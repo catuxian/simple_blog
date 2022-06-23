@@ -52,7 +52,7 @@
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
         <input type="submit" value="Login">
-        <a href="">忘記密碼</a>
+        <a href=" {{ route('password.request')}}">忘記密碼</a>
         <a href=" {{ route('register') }}">註冊帳號</a>
     </form>
 </body>
