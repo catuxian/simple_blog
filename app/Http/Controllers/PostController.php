@@ -97,7 +97,7 @@ class PostController extends Controller
                     'content' => $input['content']
                 ]);
 
-        return redirect()->route('post.edit',['id' => $id]);
+        return redirect()->route('posts.edit',['id' => $id]);
 
     }
 

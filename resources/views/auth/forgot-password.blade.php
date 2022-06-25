@@ -13,6 +13,10 @@
     <h1>忘記密碼</h1>
     <form method="post" action=" {{ route('password.email') }} ">
     @csrf
+    <label for="email">
+        請輸入註冊時使用的email
+    </label>
+    <br>
     <input type="email" name="email" required>
     <input type="submit" value="送出">
     </form>

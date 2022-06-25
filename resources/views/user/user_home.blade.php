@@ -13,7 +13,8 @@
     {{ Auth::user()->name}} 已登入
     <a href="{{ route('logout')}}">登出</a>
     @endif
-    <h1>管理者首頁</h1>
+    <h1>會員首頁</h1>
+    <a href="{{ route('search_friend') }}">新增好友</a>
     <table>
         <tr>
             <td>標題</td>
@@ -26,10 +27,10 @@
                 {{ $post->title }}
             </td>
             <td>
-                <a href="{{ route('post.edit', ['id'=>$post->id]) }}">編輯</a>
+                <a href="{{ route('posts.edit', ['id'=>$post->id]) }}">編輯</a>
             </td>
             <td>
-                <form action="{{ route('post.destroy', $post->id)}}" method="post">
+                <form action="{{ route('posts.destroy', $post->id)}}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="submit">刪除</button>
@@ -38,7 +39,7 @@
         </tr>
         @endforeach
     </table>
-    <a href="{{route('post.create')}}">新增資料</a>
+    <a href="{{route('posts.create')}}">新增資料</a>
 </body>
 
 </html>

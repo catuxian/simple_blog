@@ -2,9 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\FriendController;
+
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
@@ -22,18 +25,23 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/',function() {
-    return "首頁";
-})->name('home');
+/*首頁*/
+Route::get('/', [HomeController::class, 'home'])->name('home');
+
+/*好友*/
+Route::middleware(['auth','verified'])->prefix('friends')->group(function () {
+    Route::get('/search', [FriendController::class, 'search_friend'])->name('search_friend');//搜尋好友
+    Route::post('/add', [FriendController::class, 'add_friend'])->name('add_friend');//新增好友
+});
 
 /*會員頁面*/
-Route::middleware(['auth','verified'])->prefix('post')->group(function () {
+Route::middleware(['auth','verified'])->prefix('posts')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('user_home');//會員首頁
-    Route::get('/create', [PostController::class, 'create'])->name('post.create');//新增文章
-    Route::post('/store', [PostController::class, 'store'])->name('post.store');//儲存文章
-    Route::get('/{id}/edit', [PostController::class, 'edit'])->name('post.edit');//編輯文章頁面
-    Route::put('/{id}', [PostController::class, 'update'])->name('post.update');//更新文章
-    Route::delete('/{id}', [PostController::class, 'destroy'])->name('post.destroy');//刪除文章
+    Route::get('/create', [PostController::class, 'create'])->name('posts.create');//新增文章
+    Route::post('/store', [PostController::class, 'store'])->name('posts.store');//儲存文章
+    Route::get('/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');//編輯文章頁面
+    Route::put('/{id}', [PostController::class, 'update'])->name('posts.update');//更新文章
+    Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');//刪除文章
 });
 
 /*註冊*/

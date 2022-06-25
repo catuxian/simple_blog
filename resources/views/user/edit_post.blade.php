@@ -9,7 +9,7 @@
 <body>
     <a href="{{route('user_home')}}">管理者首頁</a>
     <h1>編輯文章</h1>
-    <form method="post" action="{{route('post.update',['id'=>$post->id])}}">
+    <form method="post" action="{{route('posts.update',['id'=>$post->id])}}">
         @csrf
         @method('PUT') 
         <label for="title">
