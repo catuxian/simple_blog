@@ -14,7 +14,7 @@
     <a href="{{ route('logout')}}">登出</a>
     @endif
     <h1>會員首頁</h1>
-    <a href="{{ route('search_friend') }}">新增好友</a>
+    <a href="{{ route('friend_list') }}">好友清單</a>
     <table>
         <tr>
             <td>標題</td>

@@ -30,12 +30,14 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 
 /*好友*/
 Route::middleware(['auth','verified'])->prefix('friends')->group(function () {
+    Route::get('/list', [FriendController::class, 'friend_list'])->name('friend_list');//好友清單
     Route::get('/search', [FriendController::class, 'search_friend'])->name('search_friend');//搜尋好友
-    Route::post('/add', [FriendController::class, 'add_friend'])->name('add_friend');//新增好友
+    Route::post('/add/{id}', [FriendController::class, 'add_friend'])->name('add_friend');//新增好友
+    Route::post('/cancel_invitation/{id}', [FriendController::class, 'cancel_invitation'])->name('cancel_invitation');//取消好友邀請
 });
 
 /*會員頁面*/
-Route::middleware(['auth','verified'])->prefix('posts')->group(function () {
+Route::middleware(['auth','verified'])->prefix('user')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('user_home');//會員首頁
     Route::get('/create', [PostController::class, 'create'])->name('posts.create');//新增文章
     Route::post('/store', [PostController::class, 'store'])->name('posts.store');//儲存文章

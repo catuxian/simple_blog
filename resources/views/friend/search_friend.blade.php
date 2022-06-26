@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <a href="{{ route('user_home') }}">會員中心</a>
     <form action="" method="GET">
         <label for="name">
             輸入會員名稱
@@ -19,17 +20,28 @@
     <h2>搜尋結果</h2>
     <table>
         <tr>
-            <td>用戶</td>
-            <td>操作</td>
+            <td colspan="2">用戶</td>
         </tr>
         @foreach ($users as $user)
         <tr>
             <td>
                 {{ $user->name }}
             </td>
+            @if($user->status == '0')
             <td>
-                <a href="javascript:void(0)">新增好友</a>
+                <form action="{{ route('cancel_invitation', $user->friend_user_id)}}" method="post">
+                    @csrf
+                    <button type="submit">取消好友邀請</button>
+                </form>
             </td>
+            @else
+            <td>
+                <form action="{{ route('add_friend', $user->id)}}" method="post">
+                    @csrf
+                    <button type="submit">新增好友</button>
+                </form>
+            </td>
+            @endif
         </tr>
         @endforeach
     </table>
