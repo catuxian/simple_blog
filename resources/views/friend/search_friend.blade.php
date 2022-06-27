@@ -14,7 +14,7 @@
         <label for="name">
             輸入會員名稱
         </label>
-        <input type="text" name="name" id="name" value="{{ Request::get('email') }}">
+        <input type="text" name="name" id="name" value="{{ Request::get('name') }}">
         <input type="submit" value="搜尋">
     </form>
     <h2>搜尋結果</h2>
@@ -27,16 +27,31 @@
             <td>
                 {{ $user->name }}
             </td>
-            @if($user->status == '0')
+            @if($user->invitation_status == 'SENDED')
             <td>
-                <form action="{{ route('cancel_invitation', $user->friend_user_id)}}" method="post">
+                <form action="{{ route('cancel_invitation', $user->user_id)}}" method="post">
                     @csrf
                     <button type="submit">取消好友邀請</button>
                 </form>
             </td>
+            @elseif($user->invitation_status == 'RECIEVED')
+            <td>
+                <form action="{{ route('accept_invitation', $user->user_id)}}" method="post">
+                    @csrf
+                    <button type="submit">接受好友邀請</button>
+                </form>
+                <form action="{{ route('decline_invitation', $user->user_id)}}" method="post">
+                    @csrf
+                    <button type="submit">拒絕</button>
+                </form>
+            </td>
+            @elseif($user->invitation_status == 'IS_FRIEND')
+            <td>
+                已成為好友
+            </td>
             @else
             <td>
-                <form action="{{ route('add_friend', $user->id)}}" method="post">
+                <form action="{{ route('add_friend', $user->user_id)}}" method="post">
                     @csrf
                     <button type="submit">新增好友</button>
                 </form>

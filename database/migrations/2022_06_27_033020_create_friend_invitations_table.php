@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('friends', function (Blueprint $table) {
+        Schema::create('friend_invitations', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');//會員編號
-            $table->integer('friend_id');//好友的會員編號
+            $table->integer('from_id');//誰發送邀請(存user_id)
+            $table->integer('to_id');//誰收到(存user_id)
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('friends');
+        Schema::dropIfExists('friend_invitations');
     }
 };

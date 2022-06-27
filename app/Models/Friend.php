@@ -11,8 +11,7 @@ class Friend extends Model
 
     protected $fillable = [
         'user_id',
-        'friend_user_id',
-        'status',
+        'friend_id',
     ];
 
     function user()

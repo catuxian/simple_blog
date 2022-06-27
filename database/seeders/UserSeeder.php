@@ -28,9 +28,22 @@ class UserSeeder extends Seeder
         //     ]);
         // }
         DB::table('users')->insert([
-            'name' => 'Tony',
+            'name' => 'jack',
+            'email' => 'jack@mail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => Hash::make('1234'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'jason',
+            'email' => 'jason@mail.com',
+            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => Hash::make('1234'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'tony',
             'email' => 'tony@mail.com',
-            'password' => Hash::make('password'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => Hash::make('1234'),
         ]);
         
     }

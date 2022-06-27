@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Friend;
+use App\Models\FriendInvitation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FriendController extends Controller
 {
@@ -20,39 +22,81 @@ class FriendController extends Controller
 
         $User = new User;
         $users = [];
+        //當前使用者id
+        $user_id = Auth::user()->id;
         if(isset($_GET['name'])) {
             $users = $User::
-                        select('users.id','users.name','friends.status','friends.friend_user_id')
-                        ->leftJoin('friends', 'users.id', '=', 'friends.friend_user_id')
+                        select(
+                            'users.id AS user_id',
+                            'users.name',
+                            DB::raw(" CASE
+                                        WHEN (SELECT COUNT(id) FROM friend_invitations WHERE from_id = '$user_id' AND to_id = users.id) > 0 THEN 'SENDED'
+                                        WHEN (SELECT COUNT(id) FROM friend_invitations WHERE to_id = '$user_id' AND from_id = users.id) > 0 THEN 'RECIEVED'
+                                        WHEN (SELECT COUNT(id) FROM friends WHERE friend_id = users.id AND user_id = $user_id) > 0 THEN 'IS_FRIEND'
+                                    END AS invitation_status"))
                         ->where('name','like',"%{$_GET['name']}%")
-                        ->where('users.id','<>', Auth::user()->id)
+                        ->where('users.id','<>', $user_id)
                         ->get();
         }
         return view('friend.search_friend')->with('users', $users);
     }
+    //好友邀請
+    public function friend_invitations()
+    {
+        $FriendInvitation = new FriendInvitation;
+    }
     //新增好友
     public function add_friend($id)
     {
-        $Friend = new Friend;
+        $FriendInvitation = new FriendInvitation;
 
-        $Friend->user_id = Auth::user()->id;
-        $Friend->friend_user_id = $id;
-        $Friend->status = 0;//0:已送出邀請但未確認
+        $FriendInvitation->from_id = Auth::user()->id;
+        $FriendInvitation->to_id = $id;
 
-        $Friend->save();
+        $FriendInvitation->save();
 
         return redirect()->back();
     }
-    ///取消好友邀請
-    public function cancel_invitation($id)
+    //取消好友邀請
+    public function cancel_invitation($to_id)
     {
 
+        $FriendInvitation = new FriendInvitation;
+
+        $FriendInvitation::          
+            where('to_id','=', $to_id)
+            ->where('from_id','=', Auth::user()->id)
+            ->delete();
+
+        return redirect()->back();
+    }
+    //拒絕好友邀請
+    public function decline_invitation($from_id)
+    {
+
+        $FriendInvitation = new FriendInvitation;
+
+        $FriendInvitation::          
+            where('from_id','=', $from_id)
+            ->where('to_id','=', Auth::user()->id)
+            ->delete();
+
+        return redirect()->back();
+    }
+    //接受好友邀請
+    public function accept_invitation($from_id)
+    {
+
+        $FriendInvitation = new FriendInvitation;
         $Friend = new Friend;
 
-        $Friend::          
-            where('friend_user_id','=', $id)
-            ->where('user_id','=', Auth::user()->id)
+        $FriendInvitation::          
+            where('from_id','=', $from_id)
+            ->where('to_id','=', Auth::user()->id)
             ->delete();
+
+        Friend::create(['user_id' => Auth::user()->id,'friend_id' => $from_id]);
+        Friend::create(['user_id' => $from_id,'friend_id' => Auth::user()->id]);
 
         return redirect()->back();
     }
