@@ -34,6 +34,7 @@ Route::middleware(['auth','verified'])->prefix('friends')->group(function () {
     Route::get('/search', [FriendController::class, 'search_friend'])->name('search_friend');//搜尋好友
     Route::get('/invitations', [FriendController::class, 'friend_invitations'])->name('friend_invitations');//好友邀請
     Route::post('/add/{id}', [FriendController::class, 'add_friend'])->name('add_friend');//新增好友
+    Route::post('/delete/{id}', [FriendController::class, 'delete_friend'])->name('delete_friend');//刪除好友
     Route::post('/cancel_invitation/{to_id}', [FriendController::class, 'cancel_invitation'])->name('cancel_invitation');//取消好友邀請
     Route::post('/decline_invitation/{from_id}', [FriendController::class, 'decline_invitation'])->name('decline_invitation');//拒絕好友邀請
     Route::post('/accept_invitation/{from_id}', [FriendController::class, 'accept_invitation'])->name('accept_invitation');//接受好友邀請

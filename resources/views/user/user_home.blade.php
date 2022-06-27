@@ -15,7 +15,7 @@
     @endif
     <h1>會員首頁</h1>
     <a href="{{ route('friend_list') }}">好友清單</a>
-    <a href="{{ route('friend_invitations') }}">好友邀請</a>
+    <a href="{{ route('friend_invitations') }}">好友邀請({{ $invitation_count }})</a>
     <table>
         <tr>
             <td>標題</td>

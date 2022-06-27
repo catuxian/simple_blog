@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\FriendInvitation;
 
 
 class PostController extends Controller
@@ -18,11 +19,15 @@ class PostController extends Controller
     {
         
         $Post = new Post;
+        $FriendInvitation = new FriendInvitation;
         
         //依照會員id找到對應的文章
-        $posts = $Post::where('user_id',Auth::user()->id)->get();
+        $posts = $Post::where('user_id', Auth::user()->id)->get();
 
-        return view('user.user_home')->with('posts', $posts);
+        //好友邀請數
+        $invitation_count = $FriendInvitation::where('to_id', Auth::user()->id)->count();
+
+        return view('user.user_home')->with('posts', $posts)->with('invitation_count', $invitation_count);
     }
 
     /**
