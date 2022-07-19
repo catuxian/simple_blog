@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\FriendController;
 
@@ -26,12 +27,13 @@ use Illuminate\Support\Str;
 */
 
 /*首頁*/
-Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::middleware(['auth','verified'])->group(function () {
+    Route::get('/', [HomeController::class, 'home'])->name('home');
+});
 
 /*好友*/
 Route::middleware(['auth','verified'])->prefix('friends')->group(function () {
     Route::get('/list', [FriendController::class, 'friend_list'])->name('friend_list');//好友清單
-    Route::get('/search', [FriendController::class, 'search_friend'])->name('search_friend');//搜尋好友
     Route::get('/invitations', [FriendController::class, 'friend_invitations'])->name('friend_invitations');//好友邀請
     Route::post('/add/{id}', [FriendController::class, 'add_friend'])->name('add_friend');//新增好友
     Route::post('/delete/{id}', [FriendController::class, 'delete_friend'])->name('delete_friend');//刪除好友
@@ -43,11 +45,12 @@ Route::middleware(['auth','verified'])->prefix('friends')->group(function () {
 /*會員頁面*/
 Route::middleware(['auth','verified'])->prefix('user')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('user_home');//會員首頁
-    Route::get('/create', [PostController::class, 'create'])->name('posts.create');//新增文章
-    Route::post('/store', [PostController::class, 'store'])->name('posts.store');//儲存文章
-    Route::get('/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');//編輯文章頁面
-    Route::put('/{id}', [PostController::class, 'update'])->name('posts.update');//更新文章
-    Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');//刪除文章
+    Route::get('/create', [PostController::class, 'create'])->name('posts.create');//新增留言
+    Route::post('/store', [PostController::class, 'store'])->name('posts.store');//儲存留言
+    Route::get('/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');//編輯留言頁面
+    Route::put('/{id}', [PostController::class, 'update'])->name('posts.update');//更新留言
+    Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');//刪除留言
+    Route::get('/search', [UserController::class, 'search_user'])->name('search_user');//搜尋用戶
 });
 
 /*註冊*/

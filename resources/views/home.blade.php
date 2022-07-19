@@ -7,13 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>網站頁面</h1>
+    <h1>歡迎來到檸檬留言板</h1>
     @if(Auth::check())
     <a href="{{ route('user_home')}}">會員中心</a>
     <a href="{{ route('logout')}}">登出</a>
-    @else
-    <a href="{{ route('login')}}">登入</a>
-
     @endif
 </body>
 </html>

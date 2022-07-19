@@ -26,30 +26,6 @@ class FriendController extends Controller
 
         return view('friend.friend_list')->with('friends', $friends);
     }
-    //搜尋好友
-    public function search_friend()
-    {
-
-        $User = new User;
-        $users = [];
-        //當前使用者id
-        $user_id = Auth::user()->id;
-        if(isset($_GET['name'])) {
-            $users = $User::
-                        select(
-                            'users.id AS user_id',
-                            'users.name',
-                            DB::raw(" CASE
-                                        WHEN (SELECT COUNT(id) FROM friend_invitations WHERE from_id = '$user_id' AND to_id = users.id) > 0 THEN 'SENDED'
-                                        WHEN (SELECT COUNT(id) FROM friend_invitations WHERE to_id = '$user_id' AND from_id = users.id) > 0 THEN 'RECIEVED'
-                                        WHEN (SELECT COUNT(id) FROM friends WHERE friend_id = users.id AND user_id = $user_id) > 0 THEN 'IS_FRIEND'
-                                    END AS invitation_status"))
-                        ->where('name','like',"%{$_GET['name']}%")
-                        ->where('users.id','<>', $user_id)
-                        ->get();
-        }
-        return view('friend.search_friend')->with('users', $users);
-    }
     //好友邀請
     public function friend_invitations()
     {

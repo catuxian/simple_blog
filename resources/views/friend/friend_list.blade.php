@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>好友清單</h1>
-    <a href="{{ route('search_friend') }}">新增好友</a>
+    <a href="{{ route('search_user') }}">搜尋用戶</a>
     <table>
         <tr>
             <td colspan="2">用戶</td>
